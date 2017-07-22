@@ -10,25 +10,25 @@ public class WinnerController {
 
     public Figure getWinner(final Field field) {
         try {
-        //horizontal
-        for(int i = 0; i <3; i++){
-            if(check(field, new Point(i,0), p -> new Point(p.x,p.y+1 )))
-                return field.getFigure(new Point(i,0));
-        }
+            //horizontal
+            for(int i = 0; i <3; i++){
+                if(check(field, new Point(i,0), p -> new Point(p.x,p.y+1 )))
+                    return field.getFigure(new Point(i,0));
+            }
 
-        //vertical
-        for(int i = 0; i <3; i++){
-            if(check(field, new Point(i,0), p -> new Point(p.x+1,p.y )))
-                    return field.getFigure(new Point(0,1));
-        }
+            //vertical
+            for(int i = 0; i <3; i++){
+                if(check(field, new Point(0, i), p -> new Point(p.x+1,p.y )))
+                        return field.getFigure(new Point(0,i));
+            }
 
-        //diagonal1
-        if(check(field, new Point(0,0), p -> new Point(p.x+1,p.y+1 )))
-            return field.getFigure(new Point(0,0));
+            //diagonal1
+            if(check(field, new Point(0,0), p -> new Point(p.x+1,p.y+1 )))
+                return field.getFigure(new Point(0,0));
 
-        //diagonal2
-        if(check(field, new Point(0,2), p -> new Point(p.x+1,p.y-1 )))
-            return field.getFigure(new Point(1,1));
+            //diagonal2
+            if(check(field, new Point(0,2), p -> new Point(p.x+1,p.y-1 )))
+                return field.getFigure(new Point(1,1));
 
         } catch (InvalidPointException e) {
             e.printStackTrace();
@@ -45,13 +45,15 @@ public class WinnerController {
 
         try {
             currentFigure = field.getFigure(currentPoint);
-            nextFigure = field.getFigure(currentPoint);
+
+            if(currentFigure == null) return false;
+
+            nextFigure = field.getFigure(nextPoint);
 
         } catch (InvalidPointException e) {
             return true;
         }
 
-        if(currentFigure == null) return false;
         if(currentFigure != nextFigure) return false;
 
         return check(field, nextPoint, iPointGenerator);
